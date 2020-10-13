@@ -19,12 +19,24 @@ Well, I will test this file another time #TODO :)
 I asked friend for any idea for this project. He wanted me to write some kind of search paint for cars by its vendor code. I thought that was a good practice idea. But I don't wanna to type all info for model 'paintforcar' by my own hands, so... I thought that it's another good practice idea: learn how to get information from web-pages run info to DB and search for certain objects. Ye, I know, it's kinda similar to first thing i made, but i wanted to do this with a 'real' web-page with a lot of tags, with a lot of attributes in them, etc. So I installed bs4 and used it. It was really easy to get info from certain web-site. For this task I created a custom manage-command named "rundbwithpaint.py" and it works perfectly without problem like in 1st 'paragraph'.
 
 #TODO write exactly the same command with attribures 
-#(
-#'url_of_site', 
-#(allowed_part_of_url_1, ..., allowed_part_of_url_m),
-#{tag_I_search_1 : attrs_in_that_tag,..., tag_I_search_n : attrs_in_that_tag}, 
-#(name_of_model_1, ..., name_of_model_k) 
-#)
+
+
+(
+
+
+'url_of_site', 
+
+
+(allowed_part_of_url_1, ..., allowed_part_of_url_m),
+
+
+{tag_I_search_1 : attrs_in_that_tag,..., tag_I_search_n : attrs_in_that_tag}, 
+
+
+(name_of_model_1, ..., name_of_model_k) 
+
+
+)
 #And figure out how to make a certain search... But this requires to make a good think about models fields: what fields are #mandatory,  how can i store that is not provided in the mandatory fields and use it with good (at least not bad) efficacy
 
 As I tested 2) a lot, I got a problem with deleting data from table. Django allows to delete <1000 object at once, but i got much more and supposed to delete data by 100 objects to reach 1000 objects that I can delete byt once. So I did write a custom manage-command named "delete_data_in_table_named.py" with parametrs. So u can type 'python manage.py delete_data_in_table_named name_of_my_table' and it will delete all data. I didn't try to delete data from unexisting table, so ... it wasn't good idea to let all this custom manage-commands without Exception catcher...
@@ -35,6 +47,6 @@ As I tested 2) a lot, I got a problem with deleting data from table. Django allo
 
 In 'services.py' I thought that I should make something ... Interactive. That I should make functions usable in other pages, not only "result_of_search_page", so i added some parametrs in this functions that can allow us to control behavior of function (controlling a number of objects on page that i found by search, controlling 'What fields should I allow to show on the web-page, in html doc?')
 
-#TODO and I'm gonna try to make 'controllable' function that defines parts of url for paginator. That would be REALLY useful, #I guess.
+#TODO and I'm gonna try to make 'controllable' function that defines parts of url for paginator. That would be REALLY useful, I guess.
 
-#Well, that's all. I know, it does me no credit: I did only "search" and "some commands to fill my db" with data. But, I #guess, that I did not really bad with that 'search' but not really good. A lot of things I should make: choose subcategory #in search, allow to searcch by more than one default search field that I described in models and so on...
+#Well, that's all. I know, it does me no credit: I did only "search" and "some commands to fill my db" with data. But, I guess, that I did not really bad with that 'search' but not really good. A lot of things I should make: choose subcategory #in search, allow to searcch by more than one default search field that I described in models and so on...
