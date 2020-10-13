@@ -1,0 +1,83 @@
+{% extends 'mainpages/layout.html' %}
+
+{% block title %} Результат поиска {% endblock%}
+
+{% block heading %} Результат поиска объекта <q>{{search_quary}}</q> {% endblock%}
+
+{% block content%}
+  <h2 style="text-align: center;">Количество найденных объектов, удовлетворяющих запросу: {{number_of_objects}}</h2>
+  
+  <!-- Если не выбрали критерий -->
+  {% if criterion == 'Я не нашел критерий' %}
+  <!-- Показываю Modal -->
+    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Вы не выбрали категорию поиска</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Пожалуйста, выберите категорию поиска!
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Я понял!</button>
+            </div>
+          </div>
+        </div>
+  </div>
+  <!-- END of Modal -->
+    
+  <!-- Если искали по критерию -->
+  {% else %}
+  <div class="row row-cols-1 row-cols-md-3 ml-3">
+    {% for el in result%}
+    <div class="card text-white bg-primary mb-3 ml-5" style="max-width: 10cm;">
+        <div class="card-header">
+            {{ el.1.0 }}
+        </div>
+        <div class="card-body">
+        <h5 class="card-title">{{el.1.1}}</h5>
+        </div>
+    </div>
+    {% endfor%}
+  </div>
+  {% endif %}
+  <!-- Конец вывода поиска по критерию -->
+{% endblock %}
+
+<!-- Пагинатор -->
+{% block paginator %}
+{% if is_paginated %}
+<nav aria-label="...">
+    <ul class="pagination justify-content-center">
+      <li class="page-item {% if not prev_page_url %} disabled {% endif %}">
+        <a class="page-link" href="{{ prev_page_url }}" tabindex="-1" aria-disabled="true">Previous</a>
+      </li>
+
+      {% for n in page.paginator.page_range %}
+        {% if  page.number == n%}
+        <li class="page-item active" aria-current="page">
+          <a class="page-link" href="?criterion={{criterion}}&search={{search_quary}}&page={{ n }}">{{n}} <span class="sr-only">(current)</span></a>
+        </li>
+        {% elif n > page.number|add:-3 and n < page.number|add:3 %}
+        <li class="page-item">
+          <a class="page-link" href="?criterion={{criterion}}&search={{search_quary}}&page={{ n }}">{{n}}</a>
+        </li>
+        {% endif %}
+      {% endfor %}
+
+      <li class="page-item {% if not next_page_url %} disabled {% endif %}">
+        <a class="page-link" href="{{next_page_url}}">Next</a>
+      </li>
+    </ul>
+</nav>
+{%endif%}
+<!-- Конец пагинатора -->
+{% endblock %}
+
+
+
+

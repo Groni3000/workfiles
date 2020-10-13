@@ -1,0 +1,24 @@
+{% extends 'mainpages/layout.html' %}
+
+{% block title %} Завершенные истории {% endblock%}
+
+{% block heading %} Завершенные истории {% endblock%}
+
+{% block content%}
+    <div class="row row-cols-1 row-cols-md-3 ml-3">
+        {% for el in completed_stories%}
+        <div class="card text-white bg-primary mb-3 ml-5" style="max-width: 10cm;">
+            <div class="card-header">
+                {% if el.title|length > 30 %}
+                    {{el.title|slice:30}} ...
+                {% else %}
+                    {{ el.title }}
+                {% endif %}
+            </div>
+            <div class="card-body">
+            <h5 class="card-title">{{el.text}} of story</h5>
+            </div>
+        </div>
+        {% endfor%}
+    </div>
+{% endblock %}
