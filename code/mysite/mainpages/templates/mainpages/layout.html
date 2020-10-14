@@ -9,22 +9,21 @@
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-primary">
-    <img src="{% static 'mainpages/imgs/A-1.jpg' %}" style="width:70px;height:70px;" alt="Roflan-Zdarova">
+    <img src="{% static 'mainpages/imgs/A-1.jpg' %}" style="width:60px;height:60px;" alt="Roflan-Zdarova">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-  
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="{% url 'home_page' %}">Home <span class="sr-only">(current)</span></a>
+        <li class="nav-item">
+          <a href="{% url 'home_page' %}" class="btn btn-primary active" role="button" aria-pressed="true">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'completed_stories' %}">Completed stories</a>
+          <a class="btn btn-primary active" href="{% url 'completed_stories' %}" role="button" aria-pressed="true">Completed stories</a>
         </li>
         <!-- Dropdown менюшка -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="btn btn-primary active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Dropdown
           </a>
           <!-- Содержание dropdown менюшки -->
@@ -36,11 +35,23 @@
           </div>
         </li>
         <!-- Конец Dropdown менюшки -->
-        <!-- Disabled ссылка -->
+        <!-- Log In ссылка -->
+        {% if not user.is_authenticated%}
         <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+          <a href="{%url 'log_in'%}" class="btn btn-primary active" role="button" aria-pressed="true">Log In</a>
         </li>
-        <!-- Конец Disabled ссылки -->
+        <li class="nav-item">
+          <a href="{%url 'signup'%}" class="btn btn-primary active" role="button" aria-pressed="true">Sign Up</a>
+        </li>
+        {% else %}
+        <!-- Конец Log In ссылки -->
+        <!-- Log Out ссылка -->
+        <form action="{%url 'log_out'%}" method="POST">
+          {%csrf_token%}
+          <button class="btn btn-primary active" type="Submit">Log Out</button>
+        </form>
+        {% endif %}
+        <!-- Конец Log Out ссылки -->
       </ul>
       <!-- Критерий поиска (выпадающее меню) -->
       <form class="form-inline my-2 my-lg-0" action="{% url 'search_result' %}">
@@ -85,7 +96,6 @@
     </div>
   </nav>
     <h1 class='text-center'>{% block heading %}{% endblock%}</h1>
-
 
     {% block content%}{% endblock %}
 

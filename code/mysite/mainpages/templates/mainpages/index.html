@@ -4,4 +4,15 @@
 
 {% block heading %} Главная страница {% endblock%}
 
-{% block content%} <p class='text-center'>Это контент</p> {% endblock %}
+
+{% block content%}
+    {% if user.is_authenticated %}
+    <p>Hello, mr. {{user.username}}</p>
+    {% endif %}
+
+    <p class='text-center'>Это контент</p> 
+{% endblock %}
+
+
+
+% endblock %}

@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     path('', views.index, name='home_page'),
     path('completed_stories/', views.show_completed_stories, name='completed_stories'),

@@ -92,15 +92,14 @@ def data_for_presentation_on_page(search_query, page, table, fields):
 
             for i in range(len(page.object_list))
             )
-        print(result_for_html_blank)
     return result_for_html_blank
 
 def next_and_prev_urls_for_paginator(page, criterion, search_query):
     #For now this function defined ONLY FOR result_of_search_page!!!!!!!!!!!!!!!!!!!!!!!!!!!
     #TODO think how can I form a part of url for paginator just using parametrs for this function
-    # '?'+**{param1:value1+"&",
+    # fun({'?'+**{param1:value1+"&",
     # param2:value2+"&",
-    # param3=value3+"&" and so on ...}
+    # param3=value3+"&" and so on ...})= fun('?param1=value1&param2=value2&...')
     if page.has_previous():
         prev_url='?criterion={}&search={}&page={}'.format(criterion,search_query, page.previous_page_number())
     else:
