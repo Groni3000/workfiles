@@ -2,33 +2,30 @@
 
 {% block title %} Log in page! {% endblock%}
 
-{% block heading %} Log in up! {% endblock%}
+{% block heading %} Log in! {% endblock%}
 
 {% block content%}
-
-<form>
-  <div class="form-group">
-    <label for="exampleInputEmail1">Username</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-    <small id="emailHelp" class="form-text text-muted">All your data won't be shared with anyone (hopefully)</small>
-  </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1">
-  </div>
-  <div class="form-group form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
+<div class='container'>
 <form class='site-form' action="{% url 'log_in' %}" method='POST'>
-  {%csrf_token%}
-  {{ form }}
-  <br>
-  <input type='submit' value="Log in">
+  {% csrf_token %}
+  <div class="col-md-4 col-md-offset-4">
+    {% for field in form %}
+    <label>{{ field.label_tag }}</label>
+    <div class="form-group">
+      {{ field }}
+      {% if field.help_text %}
+        <small class="form-text text-muted">{{ field.help_text }}</small>
+      {% endif %}
+      {% for error in field.errors %}
+        <small class="form-text" style="color: red">{{ error }}</small>
+      {% endfor %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Log In</button>
+    <small class="form-text text-muted">We'll never share your data with anyone else (hopefully).</small>
+  <div>
 </form>
+</div>
  
 
 {% endblock %}

@@ -1,16 +1,36 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  {% block head %} {% endblock %}
     <title>{% block title %}{% endblock %}</title>
+  <style>
+    #Log_in_card, #User_card:hover {
+      opacity: 1.0;
+      filter: alpha(opacity=100);/* For IE8 and earlier */
+    }
+
+    #Log_in_card, #User_card {
+      opacity: 0.5;
+      filter: alpha(opacity=50);/* For IE8 and earlier */
+      position: fixed;
+      bottom: 0px;
+      right: 20px;
+    }
+  </style> 
 </head>
+
 <body>
+  <!-- NAVBAR -->
   <nav class="navbar navbar-expand-lg navbar-light bg-primary">
     <img src="{% static 'mainpages/imgs/A-1.jpg' %}" style="width:60px;height:60px;" alt="Roflan-Zdarova">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -19,57 +39,42 @@
           <a href="{% url 'home_page' %}" class="btn btn-primary active" role="button" aria-pressed="true">Home</a>
         </li>
         <li class="nav-item">
-          <a class="btn btn-primary active" href="{% url 'completed_stories' %}" role="button" aria-pressed="true">Completed stories</a>
+          <a class="btn btn-primary active" href="{% url 'completed_stories' %}" role="button"
+            aria-pressed="true">Completed stories</a>
         </li>
         <!-- Dropdown менюшка -->
         <li class="nav-item dropdown">
-          <a class="btn btn-primary active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="btn btn-primary active dropdown-toggle" href="#" id="navbarDropdown" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Dropdown
           </a>
           <!-- Содержание dropdown менюшки -->
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="{% url 'eval' %}">Evaluate for me</a>
             <a class="dropdown-item" href="#">Another action</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">Something else here</a>
           </div>
         </li>
         <!-- Конец Dropdown менюшки -->
-        <!-- Log In ссылка -->
-        {% if not user.is_authenticated%}
-        <li class="nav-item">
-          <a href="{%url 'log_in'%}" class="btn btn-primary active" role="button" aria-pressed="true">Log In</a>
-        </li>
-        <li class="nav-item">
-          <a href="{%url 'signup'%}" class="btn btn-primary active" role="button" aria-pressed="true">Sign Up</a>
-        </li>
-        {% else %}
-        <!-- Конец Log In ссылки -->
-        <!-- Log Out ссылка -->
-        <form action="{%url 'log_out'%}" method="POST">
-          {%csrf_token%}
-          <button class="btn btn-primary active" type="Submit">Log Out</button>
-        </form>
-        {% endif %}
-        <!-- Конец Log Out ссылки -->
       </ul>
       <!-- Критерий поиска (выпадающее меню) -->
       <form class="form-inline my-2 my-lg-0" action="{% url 'search_result' %}">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <label class="input-group-text" for="inputGroupSelect01">Критерий поиска</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">Критерий поиска</label>
+          </div>
+          <select class="custom-select" id="inputGroupSelect01" name='criterion'>
+            <option value='None' selected disabled hidden>Выберите критерий поиска</option>
+            <option value="stories">По названию истории</option>
+            <option value="paintforcar">По артикулу</option>
+          </select>
         </div>
-        <select class="custom-select" id="inputGroupSelect01" name='criterion'>
-          <option value='None'selected disabled hidden>Выберите критерий поиска</option>
-          <option value="stories">По  названию истории</option>
-          <option value="paintforcar">По артикулу</option>
-        </select>
-      </div>
-      <!-- Конец критерия поиска (выпадающее меню) -->
-      <!-- Форма для поиска -->
-      
+        <!-- Конец критерия поиска (выпадающее меню) -->
+        <!-- Форма для поиска -->
+
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name='search'>
-        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" >Search</button>
+        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
       </form>
       <!-- Конец формы для поиска -->
       <!-- Modal -->
@@ -95,21 +100,83 @@
 
     </div>
   </nav>
-    <h1 class='text-center'>{% block heading %}{% endblock%}</h1>
+  <!-- END OF NAVBAR -->
+  
+  <!-- HEADING -->
+  <h1 class='text-center'>{% block heading %}{% endblock%}</h1>
+  <!-- END OF HEADING -->
 
-    {% block content%}{% endblock %}
+  {% block content%}{% endblock %}
 
-    {% block paginator%} {% endblock %}
-    
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-    <script>
-      $(document).ready(function(){
-        $('#staticBackdrop').modal('show');
-      })
-    </script>
+  {% block paginator%} {% endblock %}
+
+  <!-- If user not authenticated — show him Log_in-Log_out card -->
+  {% if not user.is_authenticated %}
+  <div id="Log_in_card">
+    <div class="card border-info mb-3" style="max-width: 18rem;">
+      <div class="card-header">Log in or Sign Up</div>
+      <div class="card-body text-info">
+        <h5 class="card-title">Welcome!</h5>
+        <p class="card-text">Log in or Sign Up first! You may access additional content</p>
+        <div class="col-12 col-md-12 btn-row">
+          <a href="{%url 'log_in'%}" class="btn btn-primary active" role="button" aria-pressed="true">Log In</a>
+          <a href="{%url 'signup'%}" class="btn btn-primary float-right active" role="button" aria-pressed="true">Sign
+            Up</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <!-- If user authenticated — show him his personal card -->
+  <div id="User_card">
+    <div class="card border-info mb-3" style="max-width: 18rem;">
+      <div class="card-header">Profile or Log out</div>
+      <div class="card-body text-info">
+        <h5 class="card-title">Your personal form. Welcome, {{user.get_username}}</h5>
+        <p class="card-text">Visit your personal page to make actions or get information about your account.</p>
+        <div class="col-12 col-md-12 btn-row">
+          <form action="{%url 'log_out'%}" method="POST">
+            {% csrf_token %}
+            <a href="{%url 'profile' username=user.get_username%}" class="btn btn-primary active" role="button" aria-pressed="true">Profile</a>
+            <button class="btn btn-primary float-right active" type="Submit">Log Out</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End of user's personal card -->
+  {% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- BOOTSTRAP -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
+  <!-- END OF BOOTSTRAP -->
+  <!-- MODAL SHOWING SCRIPT -->
+  <script>
+    $(document).ready(function () {
+      $('#staticBackdrop').modal('show');
+    })
+  </script>
+  <!-- END OF MODAL SHOWING SCRIPT -->
+  {% block script %} {% endblock %}
 </body>
+
 </html>
-
-

@@ -7,7 +7,7 @@
 
 {% block content%}
     {% if user.is_authenticated %}
-    <p>Hello, mr. {{user.username}}</p>
+    <p>Hello, mr. {{user.get_username}}</p>
     {% endif %}
 
     <p class='text-center'>Это контент</p> 
@@ -15,4 +15,3 @@
 
 
 
-% endblock %}
