@@ -19,7 +19,7 @@ class FoodProduct(models.Model):
     def __str__(self):
         return self.prod_name
 
-    # food = models.Manager()
+    food = models.Manager()
 
     #def get_absolute_url(self):
         #return reverse()

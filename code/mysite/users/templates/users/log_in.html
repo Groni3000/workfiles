@@ -1,5 +1,7 @@
 {% extends 'mainpages/layout.html' %}
 
+{% load insert_attrs_into_tag %}
+
 {% block title %} Log in page! {% endblock%}
 
 {% block heading %} Log in! {% endblock%}
@@ -12,7 +14,7 @@
     {% for field in form %}
     <label>{{ field.label_tag }}</label>
     <div class="form-group">
-      {{ field }}
+      {{ field|htmlattributes:"class : form-control" }}
       {% if field.help_text %}
         <small class="form-text text-muted">{{ field.help_text }}</small>
       {% endif %}

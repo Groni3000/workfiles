@@ -1,39 +1,95 @@
 {% extends 'mainpages/layout.html' %}
 
-{% block head %} 
-
-{% endblock %}
+{% load insert_attrs_into_tag %}
 
 {% block title %} Calculator {% endblock %}
 
 {% block heading %} Calculator {% endblock%}
 
+{% block content %}
 
-
-{% block content%}
-<form action="" method="POST">
-    {% csrf_token %}
-    <div class="container">
-        <div class="row">
-            <div class="col-7 col-md-5">
-                <div class="row">
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" for="inputGroupSelect01">Select with Search</label>
+<div class="row mt-4">
+    <div class="col-6 col-md-6">
+        {% if request.method == "GET" %}
+        <div class="row ml-3">
+            <label class="input-group-text" style="width: fit-content;" for="inputGroupSelect01">Select with Search</label>
+            <select class="selectpicker" id="sel1" name="food" data-style="btn-primary" data-width="auto" multiple data-selected-text-format="count > 2" data-live-search="true" data-actions-box="true">
+                {% for table_name in name_of_tables %}
+                    <optgroup label="{{table_name}}">
+                    {% for product in products %}
+                        {% if product.prod_type == table_name %}
+                            <option>{{product}}</option>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </select>
+            <form action="{% url 'eval' %}" class="my_form" method="POST">
+                {%csrf_token%}
+                {% for field in form %}
+                    {{field|htmlattributes:"class : my_field, id : my_field, hidden : true"}}
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        {% else %}
+        <h3>Тут будет какая-то мотивация для человека, что бы он старался придерживаться здорового образа жизни. Ну и немного рандомного латинского текста, что бы не пусто было.</h3>
+        {% lorem 10 p random %}
+        {% endif %}
+    </div>
+    <div class="col-6 col-md-6">
+        <div class="container">
+            <h5 class="title_of_result">
+                Тут будут результаты выбора продуктов, сумма их калорий, белков, жиров и углеводов.
+            </h5>
+        </div>
+        <div class="form-group row mr-2">
+            <label for="names-of-selected" class="col-2 col-form-label">Food that you have chosen:</label>
+            <!-- 5 INPUTS WITH INFORMATION -->
+            <div class="info">
+                {% if request.method == "GET" %}
+                <textarea class="form-control" style="width: 300%;" rows='3' id="names-of-selected" readonly></textarea>
+                {% else %}
+                {% for el in list_of_selected_products %}
+                <div class="form-inline">
+                    <div class="col-10">
+                        <input class="form-control" style="width: 100%;" type="text" id="selected-prod_name-{{el}}" value="{{el}}" readonly>
                     </div>
-                    <select class="selectpicker" data-style="btn-primary" data-width="auto" multiple data-selected-text-format="count > 2" data-live-search="true">
-                        <option data-tokens="ketchup mustard">Hot Dog, Fries and a Soda</option>
-                        <option data-tokens="mustard">Burger, Shake and a Smile</option>
-                        <option data-tokens="frosting">Sugar, Spice and all things nice</option>
-                    </select>
-                    <br>
-                    <div class="mt-3 col text-center">
-                        <button class="btn btn-primary" type="submit">Add to menu</button>
+                    <input class="all-info" type="text" value="{{el}};{{el.prod_calories}};{{el.prod_proteins}};{{el.prod_fats}};{{el.prod_carbohydrates}}" hidden>
+                    <input type="text" id="{{el}}-calories" value="{{el.prod_calories}}" hidden>
+                    <input type="text" id="{{el}}-proteins" value="{{el.prod_proteins}}" hidden>
+                    <input type="text" id="{{el}}-fats" value="{{el.prod_fats}}" hidden>
+                    <input type="text" id="{{el}}-carbohydrates" value="{{el.prod_carbohydrates}}" hidden>
+                    <div class="col-2">
+                        <input class="form-control-multiplier" type="number" step="0.01" id="weight_of_selected-prod_name-{{el}}" placeholder="Введите вес (гр.):">
+                        <input class="form-control multiplier" type="number" step="0.01" id="weight_of_selected-prod_name-{{el}}" value="0" hidden>
                     </div>
                 </div>
+                {% endfor %}
+                <p class="mt-4" id='explaining-text'>За выбранное количество выбранных продуктов Вы употребите:</p>
+                <div class="form-inline">
+                    <input class="form-control" type="text" id="selected-prod_calories" value="0" readonly>
+                    <label class="ml-2" for="selected-prod_calories"> калорий;</label>
+                </div>
+                <div class="form-inline">
+                    <input class="form-control" type="text" id="selected-prod_proteins" value="0" readonly>
+                    <label class="ml-2" for="selected-prod_proteins"> белков;</label>
+                </div>
+                <div class="form-inline">
+                    <input class="form-control" type="text" id="selected-prod_fats" value="0" readonly>
+                    <label class="ml-2" for="selected-prod_fats"> жиров;</label>
+                </div>
+                <div class="form-inline">
+                    <input class="form-control" type="text" id="selected-prod_carbohydrates" value="0" readonly>
+                    <label class="ml-2" for="selected-prod_carbohydrates"> углеводов;</label>
+                </div>
+                {% endif %}
             </div>
+            <!-- END OF 5 INPUTS WITH INFORMATION-->
         </div>
     </div>
-</form>
+</div>
+
+
   
 {% endblock %}
 
@@ -44,6 +100,45 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
-<!-- (Optional) Latest compiled and minified JavaScript translation files -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/i18n/defaults-*.min.js"></script>
+<script>
+$('.selectpicker').on('change', function(){
+    var selected = []
+    selected = $('.selectpicker').val()
+    console.log(selected); //Get the multiple values selected in an array
+    console.log(selected.length); //Length of the array
+    document.getElementById('names-of-selected').innerHTML=selected;
+    document.getElementById('my_field').value=selected;
+});
+</script>
+<script>
+$("input").change(function(){
+    var x=document.getElementsByClassName('all-info');
+    var y=document.getElementsByClassName('form-control multiplier');
+    var z=document.getElementsByClassName('form-control-multiplier')
+    var all_calories=0, all_proteins=0, all_fats=0, all_carbohydrates=0;
+    var i, j;
+
+    for (i = 0; i < x.length; i++) {
+        y[i].value = parseFloat(y[i].value+z[i].value)
+        var xsplitted=x[i].value.split(';')
+        for (j = 1; j < xsplitted.length; j++){
+            xsplitted[j]=xsplitted[j].split(',')
+            xsplitted[j]=parseFloat(''.concat(xsplitted[j][0],'.',xsplitted[j][1])).toFixed(2)
+        }
+        all_calories =  parseFloat(Number.parseFloat(all_calories+xsplitted[1]*y[i].value/100).toFixed(2));
+        all_proteins =  parseFloat(Number.parseFloat(all_proteins+xsplitted[2]*y[i].value/100).toFixed(2));
+        all_fats = parseFloat(Number.parseFloat(all_fats+xsplitted[3]*y[i].value/100).toFixed(2));
+        all_carbohydrates = parseFloat(Number.parseFloat(all_carbohydrates+xsplitted[4]*y[i].value/100).toFixed(2));
+    }
+    document.getElementById('selected-prod_calories').value=all_calories
+    document.getElementById('selected-prod_proteins').value=all_proteins
+    document.getElementById('selected-prod_fats').value=all_fats
+    document.getElementById('selected-prod_carbohydrates').value=all_carbohydrates
+    
+    for (i = 0; i < y.length; i++) {
+        y[i].value=0
+    }
+
+});
+</script>
 {% endblock %}
