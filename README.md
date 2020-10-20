@@ -64,5 +64,7 @@ UPDATE_1
 --------------------------------------------------------------------------------------------------------------------------
 
 4) Created <<food_calculator>>. You can find it inside dropdown menu ("evaluate for me" - link) of navbar. For future: 
+
 4.1) Create menu for a week
+
 4.2) Create a 'progress bar' for autheticated users (using his values: height, weight, age and something else?) that accumulates all values of calories, proteins, etc ... and change colour (green for slimming, yellow for optimal and red for <<DANGER, you will be a fat person!>>). Need some iformation about diets, tips for slimming or for gain muscles and use this info not only in logic of programm but ... Maybe show "random tips" for user's focus (on slimming or getting muscles).
