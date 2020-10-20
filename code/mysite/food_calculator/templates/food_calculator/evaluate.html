@@ -32,19 +32,21 @@
             </form>
         </div>
         {% else %}
-        <h3>Тут будет какая-то мотивация для человека, что бы он старался придерживаться здорового образа жизни. Ну и немного рандомного латинского текста, что бы не пусто было.</h3>
+        <h3 class='ml-2'>Тут будет какая-то мотивация для человека, что бы он старался придерживаться здорового образа жизни. Ну и немного рандомного латинского текста, что бы не пусто было.</h3>
         {% lorem 10 p random %}
         {% endif %}
     </div>
     <div class="col-6 col-md-6">
+        <!-- Some text-title -->
         <div class="container">
             <h5 class="title_of_result">
                 Тут будут результаты выбора продуктов, сумма их калорий, белков, жиров и углеводов.
             </h5>
         </div>
+        <!-- end of text-title -->
         <div class="form-group row mr-2">
             <label for="names-of-selected" class="col-2 col-form-label">Food that you have chosen:</label>
-            <!-- 5 INPUTS WITH INFORMATION -->
+
             <div class="info">
                 {% if request.method == "GET" %}
                 <textarea class="form-control" style="width: 300%;" rows='3' id="names-of-selected" readonly></textarea>
@@ -54,17 +56,20 @@
                     <div class="col-10">
                         <input class="form-control" style="width: 100%;" type="text" id="selected-prod_name-{{el}}" value="{{el}}" readonly>
                     </div>
+                    <!-- 2 HIDDEN INPUTS WITH INFORMATION -->
+                        <!-- First -->
                     <input class="all-info" type="text" value="{{el}};{{el.prod_calories}};{{el.prod_proteins}};{{el.prod_fats}};{{el.prod_carbohydrates}}" hidden>
-                    <input type="text" id="{{el}}-calories" value="{{el.prod_calories}}" hidden>
-                    <input type="text" id="{{el}}-proteins" value="{{el.prod_proteins}}" hidden>
-                    <input type="text" id="{{el}}-fats" value="{{el.prod_fats}}" hidden>
-                    <input type="text" id="{{el}}-carbohydrates" value="{{el.prod_carbohydrates}}" hidden>
+                        <!-- end of first -->
                     <div class="col-2">
                         <input class="form-control-multiplier" type="number" step="0.01" id="weight_of_selected-prod_name-{{el}}" placeholder="Введите вес (гр.):">
+                        <!-- Second -->
                         <input class="form-control multiplier" type="number" step="0.01" id="weight_of_selected-prod_name-{{el}}" value="0" hidden>
+                        <!-- end of second -->
                     </div>
+                    <!-- END OF 2 INPUTS WITH INFORMATION-->
                 </div>
                 {% endfor %}
+                <!-- Summury calories, proteins, etc ... -->
                 <p class="mt-4" id='explaining-text'>За выбранное количество выбранных продуктов Вы употребите:</p>
                 <div class="form-inline">
                     <input class="form-control" type="text" id="selected-prod_calories" value="0" readonly>
@@ -82,9 +87,9 @@
                     <input class="form-control" type="text" id="selected-prod_carbohydrates" value="0" readonly>
                     <label class="ml-2" for="selected-prod_carbohydrates"> углеводов;</label>
                 </div>
+                <!-- end of summury calories, proteins, etc ... -->
                 {% endif %}
             </div>
-            <!-- END OF 5 INPUTS WITH INFORMATION-->
         </div>
     </div>
 </div>

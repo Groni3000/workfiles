@@ -38,3 +38,13 @@ def func_name_of_tables(products):
         if product.prod_type not in name_of_tables:
             name_of_tables.append(product.prod_type)
     return name_of_tables
+
+def func_get_list_of_selected_products(form, products):
+    a=form['food_form'][0].data['value'].split(',') #List of selected prod_names
+    f=[] #It will be list of selected products (thus, I can access attributes: prod_name, prod_calories, etc...)
+    for el in a:
+       for product in products:
+          if el==product.prod_name:
+              f.append(product)
+              break
+    return f

@@ -1,64 +1,42 @@
 from django.shortcuts import render
 from .models import FoodProduct
 from .forms import food_info
-from .services import func_name_of_tables
+from .services import func_name_of_tables, func_get_list_of_selected_products
 
 # Create your views here.
 def evaluate(request):
-    #FoodProduct fields:
-    # prod_name
-    # prod_type
-    # prod_calories
-    # prod_proteins
-    # prod_fats
-    # prod_carbohydrates
-    # el_of_tables, name_of_tables = content_of_tables() MAYBE WILL USE, but no, actually
+        # PLANS:
+        # - Make a form that can add chosen products (probably in GET method) to menu for certain day and part of that day.
+        # - Make a 'progress bar' for autheticated users (using his values: height, weight, age and something else?) that accumulates all values of
+        # calories, proteins, etc ... and change colour 
+        # (green for slimming, yellow for optimal and red for <<DANGER, you will be a fat person!>>) Definitly in POST method.
     if request.method=="GET":
+        '''Show to user selectpicker class, let him choose products that 
+        he want to add to menu'''
         products=FoodProduct.food.all()
-        len_of_prods=[i for i in range(len(products))]
         name_of_tables = func_name_of_tables(products)
         form=food_info()
         context={
-            'len_of_prods': len_of_prods,
             'products': products,
             'name_of_tables': name_of_tables,
             'form': form
         }
         return render(request, 'food_calculator/evaluate.html', context)
     else:
+        '''Show to user all selected products. 
+        Let him type weight of products that he wants to use for cooking (using jquery for this task)'''
         products=FoodProduct.food.all()
-        len_of_prods=[i for i in range(len(products))]
         name_of_tables = func_name_of_tables(products)
         form=food_info(request.POST)
-        a=form['food_form'][0].data['value'].split(',')
-        f=[]
-        for el in a:
-           for product in products:
-              if el==product.prod_name:
-                  f.append(product)
-                  break
-        #f=[selected_product1,...,selected_productk]
-        list_of_names_of_selected_products=[el.prod_name for el in f]
-        list_of_calories_of_selected_products=[el.prod_calories for el in f]
-        list_of_proteins_of_selected_products=[el.prod_proteins for el in f]
-        list_of_fats_of_selected_products=[el.prod_fats for el in f]
-        list_of_carbohydrates_of_selected_products=[el.prod_carbohydrates for el in f]
-        sum_of_calories_of_selected_products=sum(list_of_calories_of_selected_products)
-        sum_of_proteins_of_selected_products=sum(list_of_proteins_of_selected_products)
-        sum_of_fats_of_selected_products=sum(list_of_fats_of_selected_products)
-        sum_of_carbohydrates_of_selected_products=sum(list_of_carbohydrates_of_selected_products)
+        f = func_get_list_of_selected_products(form, products)
         context={
-            'len_of_prods': len_of_prods,
             'products': products,
             'name_of_tables': name_of_tables,
-            'list_of_selected_products': f,
-            'list_of_names_of_selected_products': list_of_names_of_selected_products,
-            'sum_of_calories_of_selected_products': sum_of_calories_of_selected_products,
-            'sum_of_proteins_of_selected_products': sum_of_proteins_of_selected_products,
-            'sum_of_fats_of_selected_products': sum_of_fats_of_selected_products,
-            'sum_of_carbohydrates_of_selected_products': sum_of_carbohydrates_of_selected_products
+            'list_of_selected_products': f
         }
         return render(request, 'food_calculator/evaluate.html', context)
+
+
 
 
 
