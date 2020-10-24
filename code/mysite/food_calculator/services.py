@@ -4,47 +4,40 @@ from .models import FoodProduct
 #TODO
 '''Need to think about this very ... non-reuseable function'''
 def content_of_tables():
-    options=FoodProduct.food.values_list('prod_name','prod_type')
-    k=options[0][1]
-    products=[[[k]]]
-    j=0
-    for i in range(len(options)):
-        if options[i][1]==k:
-            products[j].append(options[i][0])
-        else:
-            k=options[i][1]
-            products.append([[k]])
-            j=j+1
-            products[j].append(options[i][0])
-
-    #Так меняется таблица
-    # print(products[0][0][0])
-    # print(products[1][0][0])
-    # Так меняются продукты
-    # print(products[0][1])
-    # print(products[0][2])
-
-    name_of_tables=[products[i][0][0] for i in range(len(products))]
-    el_of_tables={
-        name_of_tables[k]:[products[k][i] for i in range(1,len(products[k]))]
-        for k in range(len(products))
-    }
-    return el_of_tables, name_of_tables
-
-
-def func_name_of_tables(products):
+    products=FoodProduct.food.all()
     name_of_tables=[]
     for product in products:
-        if product.prod_type not in name_of_tables:
+        if product.prod_type in name_of_tables:
+            pass
+        else:
             name_of_tables.append(product.prod_type)
-    return name_of_tables
 
-def func_get_list_of_selected_products(form, products):
-    a=form['food_form'][0].data['value'].split(',') #List of selected prod_names
-    f=[] #It will be list of selected products (thus, I can access attributes: prod_name, prod_calories, etc...)
-    for el in a:
-       for product in products:
-          if el==product.prod_name:
-              f.append(product)
-              break
-    return f
+    list_of_choices=[
+        [name_of_tables[i],
+        [
+            [product,product] for product in products if product.prod_type==name_of_tables[i]
+        ] 
+        ] for i in range(len(name_of_tables))
+        ]
+    #making it tuple (but it's not required i think)
+    for i in range(len(list_of_choices)):
+        for j in range(len(list_of_choices[i][1])):
+            list_of_choices[i][1][j]=tuple(list_of_choices[i][1][j])
+        list_of_choices[i][1]=tuple(list_of_choices[i][1])
+        list_of_choices[i]=tuple(list_of_choices[i])
+
+    return list_of_choices
+
+
+def make_list_of_selected_products(selected_product_names_list):
+    all_products=FoodProduct.food.all()
+    result=[]
+    for el in selected_product_names_list:
+        for product in all_products:
+            if el==product.prod_name:
+                result.append(product)
+                break
+    return result
+
+
+    

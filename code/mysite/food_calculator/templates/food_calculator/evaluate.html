@@ -1,5 +1,7 @@
 {% extends 'mainpages/layout.html' %}
 
+{% load widget_tweaks %}
+
 {% load insert_attrs_into_tag %}
 
 {% block title %} Calculator {% endblock %}
@@ -7,53 +9,122 @@
 {% block heading %} Calculator {% endblock%}
 
 {% block content %}
-
+<!--First row-->
 <div class="row mt-4">
+    <!--First collomn-->
     <div class="col-6 col-md-6">
+        <!--GET-->
         {% if request.method == "GET" %}
-        <div class="row ml-3">
-            <label class="input-group-text" style="width: fit-content;" for="inputGroupSelect01">Select with Search</label>
-            <select class="selectpicker" id="sel1" name="food" data-style="btn-primary" data-width="auto" multiple data-selected-text-format="count > 2" data-live-search="true" data-actions-box="true">
-                {% for table_name in name_of_tables %}
-                    <optgroup label="{{table_name}}">
-                    {% for product in products %}
-                        {% if product.prod_type == table_name %}
-                            <option>{{product}}</option>
-                        {% endif %}
-                    {% endfor %}
-                {% endfor %}
-            </select>
-            <form action="{% url 'eval' %}" class="my_form" method="POST">
-                {%csrf_token%}
-                {% for field in form %}
-                    {{field|htmlattributes:"class : my_field, id : my_field, hidden : true"}}
-                {% endfor %}
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
+            <!--IF AUTH == TRUE-->
+            {% if user.is_authenticated %}
+                <form class="form-inline" action="{% url 'eval' %}", method="POST">
+                    {% csrf_token %}
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Day</th>
+                            <th>Date:</th>
+                            <td><button type="submit" class="btn btn-default">Submit</button></td>
+                        </tr>
+                        <tr class="cpy">
+                            <td>
+                                {% for field in form %}
+                                    {% if field.field.widget.input_type == 'text' %}
+                                        <label for="example-date-input" class="col-2 col-form-label mt-2 ml-5">{{field.name}}</label>
+                                        {% render_field field class="form-control" style="width:100%" type="date" %}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for field in form %}
+                                    {% if field.field.widget.input_type == 'select' %}
+                                        {% render_field field type="select" class="selectpicker mt-5" name="food" data-style="btn-primary" data-width="auto" multiple="true" data-selected-text-format="count > 2" data-live-search="true" data-actions-box="true"%}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            <!--END if auth == true-->
+            {% else %}
+            <!--IF AUTH == FALSE-->
+                <div class="row ml-3">
+                    <label class="input-group-text" style="width: fit-content;" for="inputGroupSelect01">Select with Search</label>
+                    <form action="{% url 'eval' %}" class="my_form" method="POST">
+                        {%csrf_token%}
+                        {% for field in form %}
+                            {% render_field field type="select" class="selectpicker" name="food" data-style="btn-primary" data-width="auto" multiple="true" data-selected-text-format="count > 2" data-live-search="true" data-actions-box="true"%}
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            <!--END if auth == false-->
+            {% endif %}
+        <!--end of GET-->
         {% else %}
-        <h3 class='ml-2'>Тут будет какая-то мотивация для человека, что бы он старался придерживаться здорового образа жизни. Ну и немного рандомного латинского текста, что бы не пусто было.</h3>
-        {% lorem 10 p random %}
+        <!--POST-->
+            <!--IF AUTH == TRUE-->
+            {% if user.is_authenticated %}
+
+            <!--END if auth == true-->
+            {% else %}
+            <!--IF AUTH == FALSE-->
+            <h3 class='ml-2'>Тут будет какая-то мотивация для человека, что бы он старался придерживаться здорового образа жизни. Ну и немного рандомного латинского текста, что бы не пусто было.</h3>
+            {% lorem 10 p random %}
+            <!--END if auth == false-->
+            {% endif %}
+        <!--end of POST-->
         {% endif %}
     </div>
-    <div class="col-6 col-md-6">
-        <!-- Some text-title -->
-        <div class="container">
-            <h5 class="title_of_result">
-                Тут будут результаты выбора продуктов, сумма их калорий, белков, жиров и углеводов.
-            </h5>
-        </div>
-        <!-- end of text-title -->
-        <div class="form-group row mr-2">
-            <label for="names-of-selected" class="col-2 col-form-label">Food that you have chosen:</label>
+    <!--END of first collomn-->
 
-            <div class="info">
-                {% if request.method == "GET" %}
-                <textarea class="form-control" style="width: 300%;" rows='3' id="names-of-selected" readonly></textarea>
-                {% else %}
-                {% for el in list_of_selected_products %}
-                <div class="form-inline">
-                    <div class="col-10">
+    <!--Second collomn--><!--Second collomn--><!--Second collomn--><!--Second collomn--><!--Second collomn--><!--Second collomn--><!--Second collomn--><!--Second collomn--><!--Second collomn--><!--Second collomn--><!--Second collomn--><!--Second collomn--><!--Second collomn--><!--Second collomn--><!--Second collomn--><!--Second collomn--><!--Second collomn--><!--Second collomn--><!--Second collomn-->
+    <div class="col-6 col-md-6">
+        <!--GET--><!--GET--><!--GET--><!--GET--><!--GET--><!--GET--><!--GET--><!--GET--><!--GET--><!--GET--><!--GET--><!--GET--><!--GET--><!--GET--><!--GET--><!--GET--><!--GET--><!--GET--><!--GET-->
+        {% if request.method == "GET" %}
+            <!--IF AUTH == TRUE-->
+            {% if user.is_authenticated %}
+                <div class="container">
+                    <h5 class="title_of_result_for_authenticated_user">
+                        Тут информация по меню определенного юзера, можно будет выбрать меню и т.д.
+                    </h5>
+                </div>
+            <!--END if auth == true-->
+            {% else %}
+            <!--IF AUTH == FALSE-->
+                <div class="container">
+                    <h5 class="title_of_result">
+                        Тут будут результаты выбора продуктов, сумма их калорий, белков, жиров и углеводов.
+                    </h5>
+                </div>
+                <div class="row">
+                    <label for="names-of-selected" class="form-label">Food that you have chosen:</label>
+                    <textarea class="form-control ml-2" style="width: 65%;" rows='1' id="names-of-selected" readonly></textarea>
+                </div>
+            <!--END if auth == false-->
+            {% endif %}
+        <!--end of GET--><!--end of GET--><!--end of GET--><!--end of GET--><!--end of GET--><!--end of GET--><!--end of GET--><!--end of GET--><!--end of GET--><!--end of GET--><!--end of GET-->
+        {% else %}
+        <!--POST--><!--POST--><!--POST--><!--POST--><!--POST--><!--POST--><!--POST--><!--POST--><!--POST--><!--POST--><!--POST--><!--POST--><!--POST--><!--POST--><!--POST--><!--POST--><!--POST-->
+            <!--IF AUTH == TRUE-->
+            {% if user.is_authenticated %}
+                {{msg}}
+            <!--END if auth == true-->
+            {% else %}
+            <!--IF AUTH == FALSE-->
+            <div class="container">
+                <h5 class="title_of_result">
+                    Тут будут результаты выбора продуктов, сумма их калорий, белков, жиров и углеводов.
+                </h5>
+            </div>
+            <textarea class="form-control mt-4" style="width: 70%;" rows='10' id="names-of-selected-post" readonly>Products that you have chosen:
+                {% for el in selected_products_list %}
+                    {{el}}
+                {% endfor %}</textarea>
+
+            
+            {% for el in selected_products_list %}
+                <div class="form-inline mt-3">
+                    <div class="col-6">
                         <input class="form-control" style="width: 100%;" type="text" id="selected-prod_name-{{el}}" value="{{el}}" readonly>
                     </div>
                     <!-- 2 HIDDEN INPUTS WITH INFORMATION -->
@@ -61,39 +132,41 @@
                     <input class="all-info" type="text" value="{{el}};{{el.prod_calories}};{{el.prod_proteins}};{{el.prod_fats}};{{el.prod_carbohydrates}}" hidden>
                         <!-- end of first -->
                     <div class="col-2">
-                        <input class="form-control-multiplier" type="number" step="0.01" id="weight_of_selected-prod_name-{{el}}" placeholder="Введите вес (гр.):">
+                        <input class="form-control multiplier" type="number" step="0.01" id="weight_of_selected-prod_name-{{el}}" placeholder="Введите вес (гр.):">
                         <!-- Second -->
-                        <input class="form-control multiplier" type="number" step="0.01" id="weight_of_selected-prod_name-{{el}}" value="0" hidden>
+                        <input class="form-control-multiplier" type="number" step="0.01" id="weight_of_selected-prod_name-{{el}}" value="0" hidden>
                         <!-- end of second -->
                     </div>
                     <!-- END OF 2 INPUTS WITH INFORMATION-->
                 </div>
-                {% endfor %}
-                <!-- Summury calories, proteins, etc ... -->
-                <p class="mt-4" id='explaining-text'>За выбранное количество выбранных продуктов Вы употребите:</p>
-                <div class="form-inline">
-                    <input class="form-control" type="text" id="selected-prod_calories" value="0" readonly>
-                    <label class="ml-2" for="selected-prod_calories"> калорий;</label>
-                </div>
-                <div class="form-inline">
-                    <input class="form-control" type="text" id="selected-prod_proteins" value="0" readonly>
-                    <label class="ml-2" for="selected-prod_proteins"> белков;</label>
-                </div>
-                <div class="form-inline">
-                    <input class="form-control" type="text" id="selected-prod_fats" value="0" readonly>
-                    <label class="ml-2" for="selected-prod_fats"> жиров;</label>
-                </div>
-                <div class="form-inline">
-                    <input class="form-control" type="text" id="selected-prod_carbohydrates" value="0" readonly>
-                    <label class="ml-2" for="selected-prod_carbohydrates"> углеводов;</label>
-                </div>
-                <!-- end of summury calories, proteins, etc ... -->
-                {% endif %}
+            {% endfor %}
+            <!-- Summury calories, proteins, etc ... -->
+            <p class="mt-4" id='explaining-text'>За выбранное количество выбранных продуктов Вы употребите:</p>
+            <div class="form-inline">
+                <input class="form-control" type="text" id="selected-prod_calories" value="0" readonly>
+                <label class="ml-2" for="selected-prod_calories"> калорий;</label>
             </div>
-        </div>
+            <div class="form-inline">
+                <input class="form-control" type="text" id="selected-prod_proteins" value="0" readonly>
+                <label class="ml-2" for="selected-prod_proteins"> белков;</label>
+            </div>
+            <div class="form-inline">
+                <input class="form-control" type="text" id="selected-prod_fats" value="0" readonly>
+                <label class="ml-2" for="selected-prod_fats"> жиров;</label>
+            </div>
+            <div class="form-inline">
+                <input class="form-control" type="text" id="selected-prod_carbohydrates" value="0" readonly>
+                <label class="ml-2" for="selected-prod_carbohydrates"> углеводов;</label>
+            </div>
+            <!-- end of summury calories, proteins, etc ... -->
+            <!--END if auth == false-->
+            {% endif %}
+        <!--end of POST--><!--end of POST--><!--end of POST--><!--end of POST--><!--end of POST--><!--end of POST--><!--end of POST--><!--end of POST--><!--end of POST--><!--end of POST--><!--end of POST--><!--end of POST--><!--end of POST--><!--end of POST--><!--end of POST-->
+        {% endif %}
     </div>
+    <!--END of second collomn--><!--END of second collomn--><!--END of second collomn--><!--END of second collomn--><!--END of second collomn--><!--END of second collomn--><!--END of second collomn--><!--END of second collomn--><!--END of second collomn--><!--END of second collomn--><!--END of second collomn--><!--END of second collomn--><!--END of second collomn-->
 </div>
-
+<!--END of first row-->
 
   
 {% endblock %}
@@ -105,21 +178,34 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
+
+{% if not user.is_authenticated %}
 <script>
 $('.selectpicker').on('change', function(){
+    document.getElementById('names-of-selected').innerHTML=''
     var selected = []
     selected = $('.selectpicker').val()
+    var i;
+    for (i = 0; i < selected.length; i++){
+        document.getElementById('names-of-selected').innerHTML+=selected[i];
+        if (i!=selected.length){
+            document.getElementById('names-of-selected').innerHTML+='\n';
+        }
+        document.getElementById('names-of-selected').setAttribute('rows',(selected.length).toString());
+    }
     console.log(selected); //Get the multiple values selected in an array
     console.log(selected.length); //Length of the array
-    document.getElementById('names-of-selected').innerHTML=selected;
-    document.getElementById('my_field').value=selected;
+    
 });
 </script>
+{% endif %}
+{% if request.method == "GET" and user.is_authenticated %}
+{% else %}
 <script>
 $("input").change(function(){
     var x=document.getElementsByClassName('all-info');
-    var y=document.getElementsByClassName('form-control multiplier');
-    var z=document.getElementsByClassName('form-control-multiplier')
+    var y=document.getElementsByClassName('form-control-multiplier');
+    var z=document.getElementsByClassName('form-control multiplier')
     var all_calories=0, all_proteins=0, all_fats=0, all_carbohydrates=0;
     var i, j;
 
@@ -146,4 +232,5 @@ $("input").change(function(){
 
 });
 </script>
+{% endif %}
 {% endblock %}

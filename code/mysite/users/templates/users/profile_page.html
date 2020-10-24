@@ -5,5 +5,85 @@
 {% block heading %} Welcome to your personal page! {% endblock%}
 
 {% block content%}
-<p>Welcome, {{username}}!</p>
+<p style="text-align: center;">Welcome, {{username}}!</p><br>
+
+<table  class="table table-striped table-dark ml-4" style="width: 70%;">
+    <tr>
+        <th colspan="3" style="text-align: center;">
+            YOUR MENUS (count: {{user_results|length}})
+        </th>
+    </tr>
+    <tr>
+        <th style="text-align: center;">
+            Menu
+        </th>
+        <th style="text-align: center;">
+            Day
+        </th>
+        <th style="text-align: center;">
+            Products
+        </th>
+    </tr>
+    {% for menu in user_results %}
+    <tr>
+        <td rowspan="7" style="width: 10%;">
+            {{menu.0}}
+        </td>
+        <td>{{menu.1.0}}</td>
+        <td>
+            {% for prod in menu.1.1 %}
+                {{prod}};
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <td>{{menu.2.0}}</td>
+        <td>
+            {% for prod in menu.2.1 %}
+                {{prod}};
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <td>{{menu.3.0}}</td>
+        <td>
+            {% for prod in menu.3.1 %}
+                {{prod}};
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <td>{{menu.4.0}}</td>
+        <td>
+            {% for prod in menu.4.1 %}
+                {{prod}};
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <td>{{menu.5.0}}</td>
+        <td>
+            {% for prod in menu.5.1 %}
+                {{prod}};
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <td>{{menu.6.0}}</td>
+        <td>
+            {% for prod in menu.6.1 %}
+                {{prod}};
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <td>{{menu.7.0}}</td>
+        <td>
+            {% for prod in menu.7.1 %}
+                {{prod}};
+            {% endfor %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}

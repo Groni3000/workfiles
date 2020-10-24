@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm, CustomUserChangeForm, CustomUserAuthenticationForm
 from django.contrib.auth import login, logout, authenticate
+from food_calculator.models import ProductMenu, FoodProduct
+from .services import prepared_results
 
 
 # Create your views here.
@@ -43,7 +45,12 @@ def log_out_view(request):
     return redirect('home_page')
 
 def profile_view(request, username):
+    user=request.user
+    user_product_menus=ProductMenu.product_menu.filter(user__username__iexact=user)
+    user_results = prepared_results(user_product_menus)
+
     context={
-        'username' : username
+        'username' : username,
+        'user_results': user_results,
     }
     return render(request, 'users/profile_page.html', context)
