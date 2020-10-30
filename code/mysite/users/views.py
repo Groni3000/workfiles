@@ -54,3 +54,11 @@ def profile_view(request, username):
         'user_results': user_results,
     }
     return render(request, 'users/profile_page.html', context)
+
+def menu_overview_view(request, username, id_menu):
+
+    context={
+        'username': username,
+        'id_menu': id_menu
+    }
+    return render(request, 'users/menu_overview.html', context)

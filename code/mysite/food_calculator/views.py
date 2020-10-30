@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import FoodProduct, ProductMenu
-from .forms import Menu, food_info, display_food_name_form
+from .forms import Menu, food_info
 from .services import make_list_of_selected_products
+import json
 
 # Create your views here.
 def evaluate(request):
@@ -14,10 +15,18 @@ def evaluate(request):
             '''Show to user selectpicker class, let him choose products that 
             he want to add to menu'''
             menu_form=Menu()
-            # weekly_form=week_form()
-            # select_products_form=list_of_selected_products_form()
+            a=[el for el in FoodProduct.food.all().values_list()]
+            #print (a)
+            food_values={}
+            for el in a:
+                food_values[el[1]]=[str(el[3]),str(el[4]),str(el[5]),str(el[6])]
+            #print(food_values)
+            all_products_json=json.dumps(food_values, ensure_ascii=False)
+            #print(all_products_json)
+
             context={
-                'form': menu_form
+                'form': menu_form,
+                'all_products_json': all_products_json
             }
             return render(request, 'food_calculator/evaluate.html', context)
         else:

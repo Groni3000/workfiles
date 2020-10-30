@@ -7,9 +7,9 @@
 {% block content%}
 <p style="text-align: center;">Welcome, {{username}}!</p><br>
 
-<table  class="table table-striped table-dark ml-4" style="width: 70%;">
+<table  class="table table-striped table-dark mr-5">
     <tr>
-        <th colspan="3" style="text-align: center;">
+        <th colspan="4" style="text-align: center;">
             YOUR MENUS (count: {{user_results|length}})
         </th>
     </tr>
@@ -23,6 +23,9 @@
         <th style="text-align: center;">
             Products
         </th>
+        <th style="text-align: center; width: 50px;">
+            Manage
+        </th>
     </tr>
     {% for menu in user_results %}
     <tr>
@@ -35,6 +38,10 @@
                 {{prod}};
             {% endfor %}
         </td>
+        <td rowspan="7" style='text-align: center; vertical-align: middle;'>
+            <a class="btn btn-dark" href="menu_number:_{{forloop.counter}}">Manage <br>
+            your menu</a>
+        </td>
     </tr>
     <tr>
         <td>{{menu.2.0}}</td>
@@ -43,6 +50,7 @@
                 {{prod}};
             {% endfor %}
         </td>
+        
     </tr>
     <tr>
         <td>{{menu.3.0}}</td>

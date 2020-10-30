@@ -1,5 +1,5 @@
 from django import forms
-from .models import ProductMenu
+from .models import ProductMenu, FoodProduct
 from .services import content_of_tables
 
 '''
@@ -20,6 +20,14 @@ class food_info(forms.Form):
 
 
 class Menu(forms.ModelForm):
+    
+    list_of_selected_products_monday=forms.ModelMultipleChoiceField(queryset=FoodProduct.food.filter(prod_name__icontains=""), to_field_name="prod_name")
+    list_of_selected_products_tuesday=forms.ModelMultipleChoiceField(queryset=FoodProduct.food.filter(prod_name__icontains=""), to_field_name="prod_name")
+    list_of_selected_products_wednesday=forms.ModelMultipleChoiceField(queryset=FoodProduct.food.filter(prod_name__icontains=""), to_field_name="prod_name")
+    list_of_selected_products_thursday=forms.ModelMultipleChoiceField(queryset=FoodProduct.food.filter(prod_name__icontains=""), to_field_name="prod_name")
+    list_of_selected_products_friday=forms.ModelMultipleChoiceField(queryset=FoodProduct.food.filter(prod_name__icontains=""), to_field_name="prod_name")
+    list_of_selected_products_saturday=forms.ModelMultipleChoiceField(queryset=FoodProduct.food.filter(prod_name__icontains=""), to_field_name="prod_name")
+    list_of_selected_products_sunday=forms.ModelMultipleChoiceField(queryset=FoodProduct.food.filter(prod_name__icontains=""), to_field_name="prod_name")
 
     class Meta():
         model = ProductMenu
